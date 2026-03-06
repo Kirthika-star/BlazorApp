@@ -1,0 +1,209 @@
+﻿@page "/{numRows:int?}"
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<p>Welcome to your new app.</p>
+
+<Counter Increment="@randomIncrement" />
+
+<p>Generated Increment Value: @randomIncrement</p>
+
+<hr />
+
+<button class="btn btn-primary " @onclick="ShowToday">
+    What’s today?
+</button>
+
+<p>@todayLabel</p>
+
+<hr />
+
+<button class="btn btn-primary " @onclick="GenerateAlphabet">
+    Alphabet
+</button>
+
+@if (letters.Count > 0)
+{
+    <ol>
+        @foreach (var letter in letters)
+        {
+            <li>@letter</li>
+        }
+    </ol>
+}
+
+@code {
+    private int randomIncrement;
+    private string todayLabel = "Who cares?";
+    private List<char> letters = new();
+
+    protected override void OnInitialized()
+    {
+        randomIncrement = GenerateRandomNumber();
+        GenerateRandomTable();
+    }
+
+    [Parameter]
+    public int? NumRows {get;set;}
+
+
+    private int GenerateRandomNumber()
+    {
+        Random rand = new Random();
+        randomIncrement = rand.Next(1, 11);
+        return randomIncrement;
+    }
+
+    void ShowToday()
+    {
+        todayLabel = DateTime.Today.ToShortDateString();
+    }
+
+    private void GenerateAlphabet()
+    {
+        letters.Clear();
+
+        Random rand = new Random();
+        int size = rand.Next(1, 27); 
+
+        for (char c = 'a'; c < 'a' + size; c++)
+        {
+            letters.Add(c);
+        }
+    }
+
+    private int[]? numbers;
+
+    private void GenerateRandomTable()
+    {
+        Random rand = new Random();
+
+        int quantity = rand.Next(1, 11);
+        int qty = quantity ?? rand.Next(1, 11);
+
+
+        numbers = Enumerable.Range(1, quantity)
+                            .Select(x => rand.Next(1, 51)) 
+                            .ToArray();
+    }
+}
+
+<hr />
+
+<h4>Random Numbers (1–50)</h4>
+
+@if (numbers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table-striped">
+        <thead>
+            <tr>
+                <th>Number</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var num in numbers)
+            {
+                <tr>
+                    <td>@num</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@* @page "/{numRows:int?}"
+@using System.Numerics
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+<p>Welcome to your new app.</p>
+
+@code {
+    Random random = new Random();
+
+    [Parameter]
+    public int? numRows { get; set; }
+
+    public int num = 0;
+
+    public int RandomNum()
+    {
+        num = random.Next(1, 11);
+        return num;
+    }
+
+    string btnEvent = "Who cares?";
+
+    void SetButtonEvent()
+    {
+        btnEvent = DateTime.Now.ToShortDateString();
+    }
+
+    private List<char> alphabetSubset = new List<char>();
+
+    void GenerateSubset()
+    {
+        int size = random.Next(1, 27);
+        alphabetSubset.Clear();
+
+        for (int i = 0; i < size; i++)
+        {
+            alphabetSubset.Add((char)('a' + i));
+        }
+    }
+
+    private List<int> randomNumbers = new List<int>();
+
+    protected override void OnInitialized()
+    {
+        int rows = numRows ?? random.Next(1, 11);
+
+        for (int i = 0; i < rows; i++)
+        {
+            randomNumbers.Add(random.Next(1, 51));
+        }
+    }
+}
+
+<Counter IncrementAmount="RandomNum()" />
+
+<p>Generated Increment Value: @num</p>
+
+<button style="display: block;" @onclick="SetButtonEvent">
+    What's Today?
+</button>
+
+<p>@btnEvent</p>
+
+<button style="display: block;" @onclick="GenerateSubset">
+    Alphabet
+</button>
+
+<ol>
+    @foreach (var letter in alphabetSubset)
+    {
+        <li>@letter</li>
+    }
+</ol>
+
+<h3>Random Numbers (1–50)</h3>
+
+<table class="table table-striped">
+    <tbody>
+        @foreach (var number in randomNumbers)
+        {
+            <tr>
+                <td>@number</td>
+            </tr>
+        }
+    </tbody>
+</table> *@
