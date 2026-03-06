@@ -81,11 +81,11 @@
     {
         Random rand = new Random();
 
-        int quantity = rand.Next(1, 11);
-        int qty = quantity ?? rand.Next(1, 11);
+        //int quantity = rand.Next(1, 11);
+        int num = NumRows ? rand.Next(1, 11):
 
 
-        numbers = Enumerable.Range(1, quantity)
+        numbers = Enumerable.Range(1, num)
                             .Select(x => rand.Next(1, 51)) 
                             .ToArray();
     }
